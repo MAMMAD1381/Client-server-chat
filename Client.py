@@ -1,4 +1,3 @@
-import errno
 import socket
 import threading
 
@@ -17,7 +16,6 @@ class Client:
         if client_name is not None:
             self.send_message(f'send to {client_name}')
             self.send_message(msg)
-
         else:
             message = msg.encode('utf-8')
             msg_length = len(message)
@@ -26,8 +24,6 @@ class Client:
             self.client.send(send_length)
             self.client.send(message)
 
-        # response = self.client.recv(1024).decode('utf-8')
-        # print(response)
 
     def receiver(self, client):
         while True:
