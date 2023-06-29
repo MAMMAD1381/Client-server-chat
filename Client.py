@@ -14,7 +14,7 @@ class Client:
 
     def send_message(self, msg, client_name=None):
         if client_name is not None:
-            self.send_message(f'send to {client_name}')
+            self.send_message(f'start message with {client_name}')
             self.send_message(msg)
         else:
             message = msg.encode('utf-8')
@@ -23,7 +23,6 @@ class Client:
             send_length += b' ' * (64 - len(send_length))
             self.client.send(send_length)
             self.client.send(message)
-
 
     def receiver(self, client):
         while True:
@@ -44,15 +43,18 @@ class Client:
     def sender(self):
         while True:
             client_name = input('pls enter the receiver name: ')
-            msg = input('pls enter your msg: ')
 
             if client_name == 'close':
                 break
 
-            if client_name and msg:
-                client.send_message(msg, client_name)
+            if client_name:
+                client.send_message(f'start message with {client_name}')
+            while True:
+                msg = input('enter your message: ')
+                if msg == '':
+                    break
+                client.send_message(msg)
         self.quit()
-
 
     def quit(self):
         self.send_message('quit')
@@ -65,7 +67,7 @@ class Client:
 
 
 if __name__ == '__main__':
-    name = input('pls enter your god damn name:')
+    name = input('pls enter your name:')
     client = Client(name)
     client.start()
     receiver = threading.Thread(target=client.receiver, args=(client.client,))
